@@ -1,0 +1,22 @@
+version: "3"
+volumes:
+  userpgdata:
+services:
+  postgres:
+    image: postgres:10.4
+    restart: always
+    environment:
+      POSTGRES_DB: url_short_dev
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root_password
+      PGDATA: /var/lib/postgresql/data
+      PGPORT: 5432
+    volumes:
+      - ./userpgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
