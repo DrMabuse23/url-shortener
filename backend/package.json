@@ -25,6 +25,7 @@
     "@nestjs/typeorm": "^5.2.2",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
+    "cors": "^2.8.5",
     "nanoid": "^2.0.0",
     "pg": "^7.6.1",
     "reflect-metadata": "^0.1.12",

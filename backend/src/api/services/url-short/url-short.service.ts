@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateUrlShortDto } from 'src/api/dto/url-short.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UrlEntity } from 'src/api/entities/url.entity';
@@ -16,7 +16,7 @@ export class UrlShortService {
    * @memberof UrlShortService
    */
   async create(_entry: CreateUrlShortDto) {
-    if (!_entry.shortId) {
+    if (!_entry.shortId || _entry.shortId && !_entry.shortId.length) {
       _entry.shortId = nanoid(6);
       _entry.selfGenerated = false;
     } else {
@@ -26,10 +26,17 @@ export class UrlShortService {
     return Promise.all([this.dbRepository.findOne({url: _entry.url}), this.dbRepository.findOne({shortId: _entry.shortId})])
       .then((res) => {
         const findByUrl = res[0];
+        const findByShortID = res[1];
+        // allready exist
         if (findByUrl && !_entry.selfGenerated) {
-          return findByUrl[0];
+          return findByUrl;
         }
-        return this.saveEntry(_entry);
+        // shortId already exist with different shortid
+        if (findByUrl && findByShortID && findByUrl.url !== findByShortID.url ) {
+          return Promise.reject(new Error(HttpStatus.NOT_ACCEPTABLE.toString()));
+        }
+        return this.saveEntry(_entry)
+          .then(() => _entry);
       });
   }
   /**
@@ -56,5 +63,4 @@ export class UrlShortService {
       return Promise.reject(_err);
     });
   }
-  
 }

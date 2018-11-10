@@ -7,8 +7,8 @@ import {
   Res,
   HttpStatus,
 } from '@nestjs/common';
-import { CreateUrlShortDto } from 'src/api/dto/url-short.dto';
-import { UrlShortService } from 'src/api/services/url-short/url-short.service';
+import { CreateUrlShortDto } from './../../dto/url-short.dto';
+import { UrlShortService } from './../../services/url-short/url-short.service';
 
 @Controller('api/v1/url-short')
 export class UrlShortController {
@@ -18,7 +18,9 @@ export class UrlShortController {
   create(@Body(ValidationPipe) entry: CreateUrlShortDto, @Res() res) {
     return this.urlShortService
       .create(entry)
-      .then(_user => res.status(HttpStatus.CREATED).json(_user))
+      .then(_result => {
+        return res.status(HttpStatus.CREATED).json(_result);
+      })
       .catch(e => res.status(HttpStatus.EXPECTATION_FAILED).json(e));
   }
 }

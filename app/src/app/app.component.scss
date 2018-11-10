@@ -1,0 +1,22 @@
+.example-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  height: 500px;
+  .mat-form-field {
+    display: flex;
+    margin-bottom: 20px;
+    width: 450px;
+    align-items: center;
+    ::ng-deep {
+      .mat-form-field-wrapper {
+        width: 100%;
+      }
+    }
+  }
+  .invalid-feedback {
+    color: red;
+  }
+}

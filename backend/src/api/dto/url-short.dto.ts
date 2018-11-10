@@ -9,9 +9,6 @@ export class CreateUrlShortDto {
 
   @ApiModelPropertyOptional({description: 'user set own shortid'})
   @IsOptional()
-  @IsString()
-  @MinLength(6)
-  @MaxLength(6)
   shortId: string;
 
   @ApiModelPropertyOptional({description: 'user set own shortid', default: false})
